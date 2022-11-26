@@ -24,6 +24,7 @@ async function run() {
     try {
         const CategoriesCollection = client.db('assignment12').collection('productCategories')
         const allProductCollection = client.db('assignment12').collection('allProducts')
+        const bookingsCollection = client.db('assignment12').collection('bookingProducts')
 
         // home categories setup  
         app.get('/categories', async (req, res) => {
@@ -41,7 +42,15 @@ async function run() {
             const query = { category: category.name };
             const result = await allProductCollection.find(query).toArray();
             res.send(result);
-        })
+        });
+
+        // modal booking api setup
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body;
+            // const query = {}
+            const result = await bookingsCollection.insertOne(booking);
+            res.send(result)
+        });
 
     }
     finally {
