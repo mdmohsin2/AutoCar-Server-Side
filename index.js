@@ -61,12 +61,20 @@ async function run() {
             res.send(result)
         });
 
-         // all users set
-         app.post('/users', async (req, res) => {
+        // all users set
+        app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
             res.send(result)
         });
+
+        // my product api setup 
+        app.get('/products', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const cursor = await allProductCollection.find(query).toArray();
+            res.send(cursor);
+        })
 
         // add Product api setup
         app.post('/products', async (req, res) => {
@@ -75,13 +83,13 @@ async function run() {
             res.send(result)
         });
 
-         // my product api setup 
-         app.get('/products', async (req, res) => {
-            const email = req.query.email;
-            const query = { email: email };
-            const cursor = await allProductCollection.find(query).toArray();
-            res.send(cursor);
+        app.delete('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await allProductCollection.deleteOne(query);
+            res.send(result)
         })
+
 
     }
     finally {
