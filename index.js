@@ -83,12 +83,31 @@ async function run() {
             res.send(result)
         });
 
+        // my product delete
         app.delete('/products/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) }
             const result = await allProductCollection.deleteOne(query);
             res.send(result)
-        })
+        });
+
+        // All sellers
+        app.get('/allSellers', async(req,res)=>{
+            const query = {accountType:'Seller'}
+            const result = await usersCollection.find(query).toArray();
+            res.send(result)
+            
+        });
+
+
+        // All Buyer
+        app.get('/allBuyer', async(req,res)=>{
+            const query = {accountType:'Buyer'}
+            const result = await usersCollection.find(query).toArray();
+            res.send(result)
+            
+        });
+
 
 
     }
