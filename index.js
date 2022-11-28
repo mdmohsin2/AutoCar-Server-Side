@@ -61,12 +61,6 @@ async function run() {
             res.send(result)
         });
 
-        // all users set
-        app.post('/users', async (req, res) => {
-            const user = req.body;
-            const result = await usersCollection.insertOne(user);
-            res.send(result)
-        });
 
         // my product api setup 
         app.get('/products', async (req, res) => {
@@ -92,21 +86,59 @@ async function run() {
         });
 
         // All sellers
-        app.get('/allSellers', async(req,res)=>{
-            const query = {accountType:'Seller'}
+        app.get('/allSellers', async (req, res) => {
+            const query = { accountType: 'Seller' }
             const result = await usersCollection.find(query).toArray();
             res.send(result)
-            
-        });
 
+        });
 
         // All Buyer
-        app.get('/allBuyer', async(req,res)=>{
-            const query = {accountType:'Buyer'}
+        app.get('/allBuyer', async (req, res) => {
+            const query = { accountType: 'Buyer' }
             const result = await usersCollection.find(query).toArray();
             res.send(result)
-            
+
         });
+
+        // all users set
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result)
+        });
+
+        // single main Buyer get
+        app.get('/users/Buyer/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email }
+            const user = await usersCollection.findOne(query);
+            res.send({ isBuyer: user?.accountType === 'Buyer' });
+        });
+
+
+        // single main seller get
+        app.get('/users/seller/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email }
+            const user = await usersCollection.findOne(query);
+            res.send({ isSeller: user?.accountType === 'Seller' });
+        });
+
+        // //all admin api
+        // app.put('/users/Buyer/:id', async (req, res) => {
+
+        //     const id = req.params.id;
+        //     const filter = { _id: ObjectId(id) }
+        //     const options = { upsert: true };
+        //     const updatedDoc = {
+        //         $set: {
+        //             accountType: 'Buyer'
+        //         }
+        //     }
+        //     const result = await usersCollection.updateOne(filter, updatedDoc, options);
+        //     res.send(result);
+        // });
 
 
 
