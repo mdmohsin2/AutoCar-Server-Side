@@ -116,6 +116,13 @@ async function run() {
             res.send({ isBuyer: user?.accountType === 'Buyer' });
         });
 
+        // my Buyer delete
+        app.delete('/users/Buyer/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await usersCollection.deleteOne(query);
+            res.send(result)
+        });
 
         // single main seller get
         app.get('/users/seller/:email', async (req, res) => {
@@ -123,6 +130,14 @@ async function run() {
             const query = { email }
             const user = await usersCollection.findOne(query);
             res.send({ isSeller: user?.accountType === 'Seller' });
+        });
+
+        // my Seller delete
+        app.delete('/users/Seller/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await usersCollection.deleteOne(query);
+            res.send(result)
         });
 
         // //all admin api
