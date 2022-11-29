@@ -140,20 +140,46 @@ async function run() {
             res.send(result)
         });
 
-        // //all admin api
-        // app.put('/users/Buyer/:id', async (req, res) => {
 
-        //     const id = req.params.id;
-        //     const filter = { _id: ObjectId(id) }
-        //     const options = { upsert: true };
-        //     const updatedDoc = {
-        //         $set: {
-        //             accountType: 'Buyer'
-        //         }
-        //     }
-        //     const result = await usersCollection.updateOne(filter, updatedDoc, options);
-        //     res.send(result);
-        // });
+
+        //all seller verify
+        app.put('/users/verify/:id', async (req, res) => {
+
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            // const user = req.params.email;
+            // const filter = {email: user}
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    isVerified: true
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+
+
+        // advertise
+        app.put('/bookings/advertise/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    isAdvertise: true
+                }
+            }
+            const result = await allProductCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+
+        // advertise get
+        app.get('/advertise', async(req,res)=>{
+            const query = {isAdvertise: true}
+            const result = await allProductCollection.find(query).toArray();
+            res.send(result)
+        })
 
 
 
