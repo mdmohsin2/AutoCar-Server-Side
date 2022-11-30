@@ -262,6 +262,35 @@ async function run() {
         });
 
 
+        app.put('/report/:id', async(req,res)=>{
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    isReport: true
+                }
+            }
+            const result = await allProductCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        })
+
+        app.get('/reports', async(req,res)=>{
+            const query = {isReport:true};
+            const result = await allProductCollection.find(query).toArray();
+            res.send(result);
+
+        });
+
+        // my Seller delete
+        app.delete('/report/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await allProductCollection.deleteOne(query);
+            res.send(result)
+        });
+
+
     }
     finally {
 
